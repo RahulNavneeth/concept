@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang='ts'>
 	const TITLE: string = 'CONCEPT';
 	let loadingDots: string = '.';
 	setInterval(() => {

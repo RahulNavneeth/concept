@@ -1,6 +1,13 @@
-<script lang="ts">
+<script lang='ts'>
+	import {onMount} from 'svelte';
+
 	import '../app.css';
 	import Loading from '../libs/components/loading/index.svelte';
+    import { getSocket } from '../libs/utils/socket';
+
+    onMount(() => {
+        getSocket()
+    })
 
 	let isLoad: boolean = true;
 	setInterval(() => {
