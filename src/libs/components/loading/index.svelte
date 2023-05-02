@@ -1,5 +1,5 @@
 <script lang='ts'>
-	const TITLE: string = 'CONCEPT';
+	const TITLE: string = 'SURFACE';
 	let loadingDots: string = '.';
 	setInterval(() => {
 		if (loadingDots.length === 3) loadingDots = '.';

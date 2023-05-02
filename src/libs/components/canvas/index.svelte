@@ -1,6 +1,9 @@
 <script>
     import {page} from "$app/stores";
     import { onDestroy, onMount } from "svelte";
+	import {concept} from "../../stores/concepts";
+	import {notification} from "../../stores/notification";
+	import {user} from "../../stores/user";
     import { ws } from "../../stores/ws";
 
     let canvas;
@@ -17,6 +20,10 @@
 
     function handleMouseMove(event) {
         if (!isDrawing) return;
+        if(!$concept.user.find(i => i.userId === $user.id).isEdit){
+            notification.set({message: "EDIT ACCESS NOT ALLOWED", type: "ERROR", show: true})
+            return;
+        }
         const x = event.offsetX;
         const y = event.offsetY;
         context.beginPath();
@@ -38,7 +45,7 @@
     // @ts-ignore
     $ws?.on(`concept-receive-${$page.params.id}`, (data) => {
         const img = new Image();
-        img.src = data[1];
+        img.src = data;
         img.onload = function() {
             context.drawImage(img, 0, 0);
         };
@@ -48,8 +55,11 @@
         canvas = document.getElementById("myCanvas");
         context = canvas.getContext("2d");
 
-        // @ts-ignore
-        $ws?.emit('concept-init', {id: $page.params.id, data: canvas.toDataURL(), usid: $ws.id })
+        const img = new Image();
+        img.src = $concept.metadata;
+        img.onload = function() {
+            context.drawImage(img, 0, 0);
+        }
 
         context.lineWidth = 100;
         context.lineJoin = "round";
@@ -72,12 +82,12 @@
 </script>
 
 <div class="w-screen h-full overflow-scroll">
-    <canvas id="myCanvas"></canvas>
+    <canvas on:mouseup={() => {$ws.emit("save-concept", {id: $page.params.id, data: canvas.toDataURL()})}} id="myCanvas"></canvas>
 </div>
 <style>
     #myCanvas {
         background-color: #fff;
-        background-image: radial-gradient(rgb(192, 197, 206) 1px, rgb(237, 240, 244) 1px);
+        background-image: radial-gradient(rgb(192, 197, 206) 1px, white 1px);
         background-size: 15px 15px;
     }
 </style>

@@ -1,15 +1,14 @@
 <script lang='ts'>
 	import {page} from "$app/stores";
-	import {colors} from "../../stores/colors";
-    import {ws} from "../../stores/ws"
+	import { colors } from "../../stores/colors";
+	import {concept} from "../../stores/concepts";
+	import { peer } from "../../stores/peer";
+	import {user} from "../../stores/user";
+	import { users } from "../../stores/users";
+    import { ws } from "../../stores/ws"
+
     let on: boolean = false;
-
-    let users: any = {};
-
-    // @ts-ignore
-    $ws.on(`concept-receive-${$page.params.id}`, (data) => {
-        users = data[2]
-    })
+    let video_on: boolean = false;
 
 </script>
 
@@ -19,14 +18,43 @@
     </button>
     <div class="mx-4 overflow-y-scroll h-full flex flex-col items-center justify-center">
         <div class="flex flex-col items-center justify-center">
-            {#each Object.entries(users) as [key, value], idx }
+            {#each $concept.user as value, idx }
                 {#if !on}
                     <div class="w-[45px] h-[45px] my-1">
-                        <img style="border-color: {key === $ws.id ? 'white' : $colors[idx % $colors.length]}; " class="shadow-md border-4 rounded-full" src="https://randomuser.me/api/portraits/men/{Math.floor(Math.random() * 100)}.jpg" alt="user-pic">
+                        <img style="border-color: {value.userId === $user?.id ? 'white' : $colors[idx % $colors.length]};" class="shadow-md border-4 rounded-full" src={value.user.image} alt="user-pic">
                     </div>
                 {:else}
-                    <div style="background:{key === $ws.id ? 'white' : $colors[idx % $colors.length]} ;" class="flex flex-col items-center justify-center w-[280px] h-[150px] my-2 border-2 border-black rounded-lg">
-                        <img style="border-color: black;" class=" w-[75px] h-[75px] border-2 rounded-full" src="https://randomuser.me/api/portraits/men/{Math.floor(Math.random() * 100)}.jpg" alt="user-pic">
+                    <div class="relative flex flex-col items-center justify-center w-[280px] h-[150px] my-2 border-2 bg-black border-black rounded-lg">
+                        {#if null === null}
+                            <div style="background: {value.userId === $user?.id ? 'white' : $colors[idx % $colors.length] } ; border-radius: 0.4rem;" class="flex flex-col items-center justify-center w-full h-full rounded-lg" >
+                                <img style="border-color: black;" class=" w-[75px] h-[75px] border-2 rounded-full" src={value.user.image} alt="user-pic">
+                            </div>
+                        {:else}
+                            <video bind:this={value[1]} style="border-radius: 0.4rem;" autoplay playsinline class="w-[280px] h-[150px] border-2 border-black" id='user-video-{value.userId}'>
+                                <track kind="captions">
+                            </video>
+                        {/if}
+                        {#if value.userId === $user?.id}
+                            <button on:click={() => {
+                                //  navigator.mediaDevices.getUserMedia({video: true, audio: false})
+                                //    .then((stream) => {
+                                //        // @ts-ignore
+                                //        for(let [idx, value] of Object.entries($users)){
+                                //            console.log("CALL", idx)
+                                //            if(idx !== $ws.id) {
+                                //                $peer.call(idx+$page.params.id, stream, {
+                                //                    metadata: {
+                                //                        usid: key
+                                //                    }
+                                //                })
+                                //            }
+                                //        }
+                                //        $users[$ws.id][1].srcObject = stream;
+                                //        $users[$ws.id][1].play();
+                                // })
+                           }}
+                            class="absolute top-[80%] left-[4%] text-xl">V</button>
+                        {/if}
                     </div>
                 {/if} 
             {/each}

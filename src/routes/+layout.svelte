@@ -1,24 +1,47 @@
 <script lang='ts'>
-	import {onMount} from 'svelte';
-
 	import '../app.css';
+	import {onMount} from 'svelte';
+    import { notification } from '../libs/stores/notification';
+    import { requestAccess } from '../libs/stores/request-access';
 	import Loading from '../libs/components/loading/index.svelte';
+    import Nav from '../libs/components/navbar/concept/index.svelte';
+    import Notification from '../libs/components/notification/index.svelte';
+    import RequestAccess from '../libs/components/request-access/index.svelte';
     import { getSocket } from '../libs/utils/socket';
+	import { page } from '$app/stores';
+	import {user} from '../libs/stores/user';
+	import axios from 'axios';
+	import {SERVER_URL} from '../libs/utils/constants';
 
-    onMount(() => {
+    onMount(async() => {
+        if($page.route.id !== '/auth/login') {
+            const {data} = await axios.get(SERVER_URL+"/profile", {
+                withCredentials: true
+            })
+            user.set(data)
+        }
         getSocket()
     })
 
-	let isLoad: boolean = true;
-	setInterval(() => {
-		isLoad = false;
-	}, 2000);
 </script>
 
 <div class="font-primary w-screen h-screen flex flex-col items-center justify-start">
-	{#if isLoad}
+	{#if $user === null && $page.route.id !== '/auth/login'}
 		<Loading />
 	{:else}
-		<slot />
+    <div class="bg-white relative flex flex-col items-center justify-center w-screen h-screen">
+        {#if $notification.show}
+    	    <Notification />
+        {/if}
+        {#if $requestAccess.show}
+    	    <RequestAccess />
+        {/if}
+        {#if ['/concept/[id]', '/'].includes($page.route.id || "")}
+            <Nav />
+        {/if}
+        <div class="{$page.route.id !== '/auth/login' ? 'mt-[45px]': ''} w-full h-full">
+            <slot />
+        </div>
+    </div>
 	{/if}
 </div>
