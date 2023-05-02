@@ -26,7 +26,7 @@
 </script>
 
 <div class="font-primary w-screen h-screen flex flex-col items-center justify-start">
-	{#if $user === null && $page.route.id !== '/auth/login'}
+	{#if $user === null && !['/auth/login', '/auth/signup'].includes($page?.route?.id || "")}
 		<Loading />
 	{:else}
     <div class="bg-white relative flex flex-col items-center justify-center w-screen h-screen">
@@ -39,7 +39,7 @@
         {#if ['/concept/[id]', '/'].includes($page.route.id || "")}
             <Nav />
         {/if}
-        <div class="{$page.route.id !== '/auth/login' ? 'mt-[45px]': ''} w-full h-full">
+        <div class="{!['/auth/login', '/auth/signup'].includes($page?.route?.id || "") ? 'mt-[45px]': ''} w-full h-full">
             <slot />
         </div>
     </div>

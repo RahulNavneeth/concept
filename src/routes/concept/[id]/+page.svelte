@@ -3,7 +3,7 @@
     import Canvas from '../../../libs/components/canvas/index.svelte';
     import { ws } from '../../../libs/stores/ws';
     import { users } from '../../../libs/stores/users';
-    import { notification } from '../../../libs/stores/notification';
+    import { notification, requestIsLoading } from '../../../libs/stores/notification';
     import { requestAccess } from '../../../libs/stores/request-access';
     import { colors } from '../../../libs/stores/colors';
 	import { page } from '$app/stores';
@@ -41,8 +41,12 @@
         })
     })
 
+    $ws.on(`update-user-${$page.params.id}-${$user.id}`, (data) => {
+        user.set(data)
+    })
+
     // @ts-ignore
-    $ws.on(`concept-init-${$page.params.id}`, (data) => {
+    $ws.on(`concept-init-${$page.params.id}`, (data, userData) => {
         concept.set(data)
     })
 
@@ -68,6 +72,7 @@
             // @ts-ignore
             return { ...value, user: [...value.user] }
         })
+        requestIsLoading.set(false)
         requestAccess.set({message: "", show: false, requestId: ""}) 
     })
 

@@ -74,7 +74,24 @@ app.post("/login", async(req, res) => {
             })
         }
     }
-    
+})
+
+app.post('/signup', async(req, res) => {
+    const {data} = req.body;
+    try {
+        const response = await prisma.user.create({
+            data : {
+                email: data.email,
+                password: data.password,
+                username: data.username,
+                //@ts-ignore
+                image: data.image
+            }
+        });
+        res.status(200).json(response)
+    } catch (e) {
+        res.status(409).json({message: "USER ALREADY EXISTS", status: 409})
+    }
 })
 
 io.on("connection", (socket) => {
@@ -138,8 +155,22 @@ io.on("connection", (socket) => {
                 }
             }
         })
+        const userData = await prisma.user.findUnique({
+            where: {
+                id: res.usid
+            },
+            include: {
+                concept: {
+                    include: {
+                        concept: true
+                    }
+                }
+            }
+        })
         socket.broadcast.emit(`on-notif-${res.id}`, {message: `${res.name.toUpperCase()} JOINED`,type: "SUCCESS", show: true});
-        io.emit(`concept-init-${res.id}`, data);
+        io.emit(`update-user-${res.id}-${res.usid}`, userData);
+        io.emit(`concept-init-${res.id}`, data, userData);
+
     });
 
     socket.on('on-draw', async(res: {id: string, data: any}) => {
@@ -184,6 +215,10 @@ io.on("connection", (socket) => {
         })
         io.emit(`allow-access-${res.id}`, {requestId: res.requestUserId});
         socket.broadcast.emit(`on-notif-${res.id}-${res.requestUserId}`, {message: `EDIT ACCESS ACCEPTED`,type: "SUCCESS", show: true}, "EDIT_ACCESS");
+    })
+
+    socket.on("decline-access", async(res) => {
+        socket.broadcast.emit(`on-notif-${res.id}-${res.requestUserId}`, {message: `EDIT ACCESS DECLINE`,type: "ERROR", show: true});
     })
 })
 
