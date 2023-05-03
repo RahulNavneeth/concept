@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import {colors} from "../../stores/colors";
 	import {notification} from "../../stores/notification";
-    import { fade, blur, fly, slide, scale } from "svelte/transition";
+    import { fly } from "svelte/transition";
 
     setTimeout(() => {
         $notification.show = false;

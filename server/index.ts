@@ -52,6 +52,11 @@ app.get('/profile', authenticateToken,  async(req, res) => {
     res.status(200).json(rem)
 });
 
+app.post('/logout', async(req, res) => {
+    res.clearCookie('surface_token', { httpOnly: true, domain: CLIENT_URL });
+    res.status(200).json({message: "SUCCESS"})
+})
+
 app.post("/login", async(req, res) => {
     const { data } = req.body
     const response = await prisma.user.findUnique({

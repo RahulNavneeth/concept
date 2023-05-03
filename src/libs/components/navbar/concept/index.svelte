@@ -59,7 +59,9 @@
                     {:else if $page.route.id  === "/"}
                         <button class="p-1 py-3 cursor-pointer transition-all hover:bg-black hover:text-white text-center w-full">PROFILE</button>
                     {/if}
-                    <button class="p-1 py-3 cursor-pointer transition-all hover:bg-black hover:text-white text-center w-full">LOGOUT</button>
+                    <form method="POST" action="/auth/logout" class="w-full">
+                        <button type="submit" class="p-1 py-3 cursor-pointer transition-all hover:bg-black hover:text-white text-center w-full">LOGOUT</button>
+                    </form>
                 </div> 
             {/if}
         {:else}
