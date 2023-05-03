@@ -14,7 +14,7 @@
 	import { concept } from '../../../libs/stores/concepts';
 
     // @ts-ignore
-    getPeer($ws.id+$page.params.id)
+    getPeer($user.id+$page.params.id)
 
     // @ts-ignore
     $ws?.emit('concept-init', {id: $page.params.id, name: $user.username, usid: $user.id })
@@ -22,6 +22,13 @@
     // @ts-ignore
     $ws.on(`on-init-${$page.params.id}`, (data) => {
         concept.set(data)
+    })
+
+    $ws.on(`name-receive-${$page.params.id}`, (data) => {
+        concept.update(value => {
+            value.name = data
+            return {...value}
+        })
     })
 
     $ws.on(`notify-request-access-${$page.params.id}-${$user?.id}`, (data : {message: string, userId: string}) => {
@@ -85,16 +92,20 @@
 
 	}
 
+    console.log($peer.id)
+
     // @ts-ignore
     $peer.on('call', (call) => {
+        console.log(call)
         navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => {
             call.answer(stream)
             call.on('stream', (remoteStream) => {
                 // @ts-ignore
                 // const blob = new Blob([remoteStream], {type: "video/webm"})
                 // $ws.emit("answer-call", {id: $page.params.id, stream: blob, usid: $ws.id})
-                $users[call.metadata.usid][1].srcObject = remoteStream
-                $users[call.metadata.usid][1].play()
+                // $users[call.metadata.usid][1].srcObject = remoteStream
+                // $users[call.metadata.usid][1].play()
+                console.log(remoteStream);
             })
         })
     })

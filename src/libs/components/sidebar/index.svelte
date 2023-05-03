@@ -36,22 +36,21 @@
                         {/if}
                         {#if value.userId === $user?.id}
                             <button on:click={() => {
-                                //  navigator.mediaDevices.getUserMedia({video: true, audio: false})
-                                //    .then((stream) => {
-                                //        // @ts-ignore
-                                //        for(let [idx, value] of Object.entries($users)){
-                                //            console.log("CALL", idx)
-                                //            if(idx !== $ws.id) {
-                                //                $peer.call(idx+$page.params.id, stream, {
-                                //                    metadata: {
-                                //                        usid: key
-                                //                    }
-                                //                })
-                                //            }
-                                //        }
-                                //        $users[$ws.id][1].srcObject = stream;
-                                //        $users[$ws.id][1].play();
-                                // })
+                                navigator.mediaDevices.getUserMedia({video: true, audio: false})
+                                    .then((stream) => {
+                                        // @ts-ignore
+                                        for(let value of $concept.user){
+                                            if(value.userId !== $user?.id) {
+                                                $peer.call(value.userId+$page.params.id, stream, {
+                                                    metadata: {
+                                                        usid: value.userId,
+                                                    }
+                                                })
+                                            }
+                                        }
+                                        // $users[$ws.id][1].srcObject = stream;
+                                        // $users[$ws.id][1].play();
+                                })
                            }}
                             class="absolute top-[80%] left-[4%] text-xl">V</button>
                         {/if}

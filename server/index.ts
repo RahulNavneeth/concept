@@ -188,13 +188,17 @@ io.on("connection", (socket) => {
         })
         console.log(data)
     })
-    //
-    // socket.on('change-name', (res :{id: string, name: string}) => {
-    //     if(res.id in data){
-    //         data[res.id][0] = res.name;
-    //         io.emit(`concept-receive-${res.id}`, data[res.id]);
-    //     }
-    // })
+
+    socket.on('change-name', async(res :{id: string, name: string}) => {
+        io.emit(`name-receive-${res.id}`, res.name);
+        await prisma.concept.update({
+            where: {
+                id: res.id
+            },data:{
+                name: res.name
+            }
+        })
+    })
 
     socket.on('change-user-curosr', (res :{id: string, coords: {x: number, y: number}, usid: string}) => {
         io.emit(`change-user-cursor-${res.id}`, {coords: res.coords, usid: res.usid});
@@ -218,7 +222,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("decline-access", async(res) => {
-        socket.broadcast.emit(`on-notif-${res.id}-${res.requestUserId}`, {message: `EDIT ACCESS DECLINE`,type: "ERROR", show: true});
+        socket.broadcast.emit(`on-notif-${res.id}-${res.requestUserId}`, {message: `EDIT ACCESS DECLINED`,type: "ERROR", show: true});
     })
 })
 

@@ -33,7 +33,6 @@
         {/if}
 	</div>
 
-	<!-- TO BE REPLACED -->
 	<div class="w-1/3 flex flex-row items-center relative justify-end px-2">
         {#if $user }
             <button on:click={() => {
