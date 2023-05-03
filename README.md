@@ -1,38 +1,79 @@
-# create-svelte
+<div align="center">
+    <img src="https://media.discordapp.net/attachments/1098805680045043813/1103192523750510622/Group_1.png?width=1360&height=1360" width="100" alt="Logo"/><br/>
+    <h1 align="center">SURFACE</h1>
+  <a href="https://github.com/RahulNavneeth">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"/>
+  </a>
+<img src="https://img.shields.io/badge/SvelteKit-FF3E00?style=for-the-badge&logo=Svelte&logoColor=white"/>
+<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"/>
+<img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white"/>
+<img src="https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=white"/>
+<img src="https://img.shields.io/badge/Socket.io-010101?&style=for-the-badge&logo=Socket.io&logoColor=white"/>
+<img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black"/>
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
 ```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+REVOLUTIONIZE YOUR VIRTUAL COLLABORATIONS WITH OUR WEB APP THAT COMBINES OPEN-SOURCE DESIGN TOOLS WITH SEAMLESS VIDEO CONFERENCING
 ```
+</div>
 
-## Building
+## DEMO / SCREENSHOTS
 
-To create a production version of your app:
+### SINGLE USER
+<hr>
 
-```bash
-npm run build
-```
+https://user-images.githubusercontent.com/50259284/235841709-46d3ef69-1a77-40c3-b36d-59dca9331b82.mov
 
-You can preview the production build with `npm run preview`.
+### MULTIPLE USER ACROSS THE GLOBE
+<hr>
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+https://user-images.githubusercontent.com/50259284/235841808-ce744859-2fc6-4268-8444-6873a00d1d92.mov
+
+**JOIN VIA SHARING THE SAME ROOM CODE**
+
+![image](https://user-images.githubusercontent.com/50259284/235842306-c0124912-9d4d-417c-8084-4135b2d94469.png)
+
+![image](https://user-images.githubusercontent.com/50259284/235842286-2827575f-b60c-4841-ba37-d07740671ee3.png)
+
+## HOW TO USE
+
+### CLIENT & SERVER
+<hr>
+
+1. CLONE THIS REPO
+2. `npm i`
+3. `cd server && npm i && cd ..`
+
+### DATABASE
+<hr>
+
+1. Head to [supabase](https://app.supabase.com)
+2. Create a new project
+
+After initalizing
+
+3. Create `.env` in the root dir of the project
+
+Paste the below
+
+4. 
+    `DIRECT_URL = "postgres://postgres:[PROJECT_PASSWORD]@db.[PROJECT_ID].supabase.co:5432/postgres"`
+ 
+    `DATABASE_URL = "postgres://postgres:[PROJECT_PASSWORD]@db.[PROJECT_ID].supabase.co:6543/postgres?pgbouncer=true"`
+
+5. `npx prisma migrate dev --name init` in root dir
+6. `npx prisma generate`
+
+### STARTING ON LOCALHOST
+<hr>
+
+1. `npm run dev`
+2. `cd server`
+3. `npm run start`
+
+**BREAK SOME CODE - GIVE A PR - HAFFUN**
+
+
+
+
+
+
